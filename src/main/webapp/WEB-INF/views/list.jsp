@@ -36,7 +36,10 @@
             index.jsp를 출력함.
         -->
         <td>
+        <!--${}표현을 할 때 javascript랑 호환이 안될 때도 있으니 ''안에 넣어서 사용해주는게 좋다.
+        forEach안에서 선언된 변수는 그 부분을 빠져나가면 사용할 수 없게 된다. (지역변수)-->
             <button><a href ="/findId?id=${student.id}">수정</a></button>
+
         </td>
         <td>
             <button><a href ="/delete?id=${student.id}">삭제</a></button>
@@ -45,4 +48,12 @@
     </c:forEach>
     </table>
 </body>
+<script>
+    const update_fn = (id) => {
+        location.href = "/update?id="+id;
+    }
+    const delete_fn = (id) => {
+            location.href = "/delete?id="+id;
+    }
+</script>
 </html>

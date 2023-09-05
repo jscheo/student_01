@@ -52,6 +52,7 @@ public class StudentController {
     @GetMapping("/findId")
     public String findId(@RequestParam("id") Long id, Model model) {
         StudentDTO studentDTO = studentService.findId(id);
+        // model에 담은건 일회용이다 한번 보내고 나면 끝 다시쓰고 싶으면 다시 보내줘야함
         model.addAttribute("student", studentDTO);
         return "update";
     }
@@ -59,13 +60,18 @@ public class StudentController {
     @PostMapping("/update")
     public String update(@ModelAttribute StudentDTO studentDTO) {
         studentService.update(studentDTO);
-        return "index";
+        //list로 바로 보내면 그냥 단순히 list.jsp를 띄우는거라 데이터가 없는 껍데기상태로 이동한다.
+        // redirect로 적은 주소는 컨트롤러에 적힌 주소를 찾아가는 의미 jsp로 바로 가는게 아님.
+        return "redirect: /list";
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam("id") Long id) {
+    public String delete(@RequestParam("id") Long id, Model model) {
         studentService.delete(id);
-        return "index";
+        //redirect로 하지 않고 list를 만들어서 보내는 방식
+        List<StudentDTO> studentDTOList = studentService.findAll();
+        model.addAttribute("studentList", studentDTOList);
+        return "list";
     }
 }
 
